@@ -1,0 +1,24 @@
+language: go
+go: 1.8
+sudo: required
+
+before_install:
+  - wget https://git.io/travis-semver.sh && chmod +x travis-semver.sh
+  - SEMVER=$(./travis-semver.sh)
+
+script:
+  - GOARCH=amd64 GOOS=linux go build -o bin/papertrailer-linux-amd64 main.go
+  - GOARCH=amd64 GOOS=darwin go build -o bin/papertrailer-darwin-amd64 main.go
+  - GOARCH=amd64 GOOS=windows go build -o bin/papertrailer-windows-amd64.exe main.go
+
+deploy:
+  provider: releases
+  api_key:
+    secure: NURzQcDMJmZS7vTIhKt3zTT0a2L9/rbFTLI+KzAH6sDfitZKIHOeciOX8fgZyGjVjYFwx8F+NmOena/KoOqIG/avm19JqyUPJjvZyfhapYH+cdx07oiZEe3aNbskDUY7BQFokNw9xBr5mbxmDXr1/ccu18wmTmFEwE95iMQSn07fSESlt4XyRzC5ulJZsbs8s1Zb6+bc2gk38W2N4NZGqNLsAFEK2nRg6uC9s+4otJSpNB9ncdeyUuLm44l71HZffvG2TaUhP9hCRPlRYVHVouUWhDy0JJzAMQ/NU+qXpPwIlNCppWRWpNxkl+YupktiYpJV/ZCgBMZa1JSpHVbIsuqJzSJF5z4roYFfFDUEmMG0iVEzj4h3YykZkAa7n5JOwkuvuXTHLLISBuZJfV7WxV6PAXeHIN5aQ7TMxmfqy17IKZzWgXIIhE+CqoQgjhmJomHzxhu/mQo2yuqRm7I0lqfmLR02O+VCLtGjihLmUU2wZ6UROPZw+A9g5T1C9tuoq2YAcunm+LB1CKthNyTTyKARwzI6MIKz+9QbRxpqx85dtGQUFqoLod9K10+qzwiO7OXQXr5o5gUZrS9P3/z46f0Tf2LIhCNU8qNlxeS5jfIfpDFcIq48JbfYs8U1Eqe+ZU8S7jTsyuG6x7vt1g5bnSQDjuTwfh/2oKEH33QFQBY=
+  file:
+    - "bin/papertrailer-linux-amd64"
+    - "bin/papertrailer-darwin-amd64"
+    - "bin/papertrailer-windows-amd64.exe"
+  skip_cleanup: true
+  on:
+    repo: nicklanng/papertrailer
