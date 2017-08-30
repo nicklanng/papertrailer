@@ -21,4 +21,4 @@ deploy:
     - "bin/papertrailer-windows-amd64.exe"
   skip_cleanup: true
   on:
-    repo: nicklanng/papertrailer
+    tags: true
