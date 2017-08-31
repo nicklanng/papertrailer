@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/fatih/color"
@@ -58,17 +59,33 @@ func main() {
 
 	response := &events.EventResponse{}
 
-	for {
-		fmt.Print(".")
-		response = events.Fetch(groupID, response.MaximumID)
+	spinnerIndex := 0
+	spinner := []string{"|", "/", "-", "\\"}
 
-		if len(response.Events) > 0 {
-			fmt.Println()
+	var knownIssues int
+	lastSeenDate := ""
+	lastSeenID := ""
+
+	for {
+		knownIssues = 0
+		fmt.Print("\r" + spinner[spinnerIndex])
+		spinnerIndex = (spinnerIndex + 1) % len(spinner)
+
+		response = events.Fetch(groupID, lastSeenID)
+		if len(response.Events) == 0 {
+			continue
+		}
+		if response.MaximumID != "" {
+			lastSeenID = response.MaximumID
 		}
 
+		fmt.Print("\r")
+
 		for _, evt := range response.Events {
-			if !isKnownIssue(evt.Message) {
-				color.Set(color.Bold)
+			lastSeenDate = evt.DisplayRecievedAt
+			if isKnownIssue(evt.Message) {
+				knownIssues++
+				continue
 			}
 
 			color.Set(color.FgCyan)
@@ -90,5 +107,15 @@ func main() {
 
 			color.Unset()
 		}
+
+		if knownIssues == 0 {
+			continue
+		}
+
+		color.Set(color.FgCyan)
+		fmt.Print(lastSeenDate + " ")
+		color.Set(color.FgGreen)
+		fmt.Println("Found " + strconv.Itoa(knownIssues) + " known issues")
+		color.Unset()
 	}
 }
