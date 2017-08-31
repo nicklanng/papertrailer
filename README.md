@@ -12,7 +12,14 @@ go get github.com/nicklanng/papertrailer
 Otherwise, you can click go to https://github.com/nicklanng/papertrailer/releases to get the latest builds.
 
 ## Usage
-`papertrailer <group_id>`
+
+
+Run `papertrailer <group_id>`
+
+This will create a config file on the first run.
+Fill in the `token` with your Papertrail API token: https://help.papertrailapp.com/kb/how-it-works/http-api/#authentication
+
+Fill in the `knownissuespath` with a path to a plain text file of strings to ignore
 
 `<group_id>` is the id of the group to watch in Papertrail.
 
