@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/user"
 	"strconv"
 	"strings"
 
@@ -17,10 +18,20 @@ import (
 var knownIssues []string
 
 func loadKnownIssues() (result []string) {
-	// load known issues
-	file, err := os.Open("knownissues.txt")
+
+	usr, err := user.Current()
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	file, err := os.Open(usr.HomeDir + "/.config/papertrailer/knownissues")
+	if err != nil {
+		file, err = os.Create(usr.HomeDir + "/.config/papertrailer/knownissues")
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		return []string{}
 	}
 	defer file.Close()
 
