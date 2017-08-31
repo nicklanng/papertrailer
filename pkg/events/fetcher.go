@@ -26,6 +26,10 @@ func Fetch(groupID, minId string) *EventResponse {
 		SetResult(&EventResponse{}).
 		Get("https://papertrailapp.com/api/v1/events/search.json")
 
+	if resp.StatusCode() == 404 {
+		log.Fatal("Unknown group specified")
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}
