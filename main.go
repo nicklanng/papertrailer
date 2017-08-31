@@ -70,7 +70,7 @@ func main() {
 			color.Set(color.FgCyan)
 			fmt.Print(evt.DisplayRecievedAt + " ")
 
-			color.Set(color.FgYellow)
+			color.Set(color.FgRed)
 			fmt.Print(evt.Hostname + " ")
 
 			color.Set(color.FgWhite)

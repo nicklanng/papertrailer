@@ -8,7 +8,8 @@ import (
 )
 
 type Configuration struct {
-	Token string `json:"token"`
+	Token           string `json:"token"`
+	KnownIssuesPath string `json:"knownissuespath"`
 }
 
 var Config Configuration
@@ -23,6 +24,7 @@ func GetConfig() {
 	if err != nil {
 		log.Println(err)
 		CreateConfig()
+		CreateKnownIssues()
 		log.Fatalln("Created new config file, please edit contents!")
 	}
 

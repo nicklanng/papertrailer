@@ -14,7 +14,12 @@ func GetKnownIssues() (result []string) {
 		log.Fatal(err)
 	}
 
-	file, err := os.Open(usr.HomeDir + "/.config/papertrailer/knownissues")
+	knownIssuesPath := usr.HomeDir + "/.config/papertrailer/knownissues"
+	if Config.KnownIssuesPath != "" {
+		knownIssuesPath = Config.KnownIssuesPath
+	}
+
+	file, err := os.Open(knownIssuesPath)
 	if err != nil {
 		CreateKnownIssues()
 		return []string{}
