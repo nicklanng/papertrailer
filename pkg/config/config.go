@@ -66,15 +66,3 @@ func CreateConfig() {
 
 	file.Close()
 }
-
-func CheckState() {
-	usr, err := user.Current()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if Config.Token == "" {
-		log.Fatalln("No token Specified, please edit " + usr.HomeDir + "/.config/papertrailer/config.json")
-	}
-
-}
